@@ -10,7 +10,7 @@ import {
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Image from "next/image";
-import axios from "axios";
+import axios from "./../configs/axios";
 import { useRouter } from "next/router";
 import { useDataLayerValue } from "../context/DataLayer";
 import Head from "next/head";

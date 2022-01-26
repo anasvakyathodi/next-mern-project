@@ -44,7 +44,7 @@ const Header = () => {
   const handleLogout = async (): Promise<any> => {
     try {
       handleCloseUserMenu();
-      await axios.post("http://localhost:5000/users/logout");
+      await axios.post("/users/logout");
       localStorage.removeItem("token");
       router.replace("/login");
     } catch (error) {

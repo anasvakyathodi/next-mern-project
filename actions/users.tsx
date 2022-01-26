@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./../configs/axios";
 
 export const login = async (
   props: any,
@@ -6,7 +6,7 @@ export const login = async (
   router: any
 ): Promise<any> => {
   await axios
-    .post("http://localhost:5000/users/login", {
+    .post("/users/login", {
       email: props.email,
       password: props.password,
     })
@@ -36,7 +36,7 @@ export const getTableData = async (data: Data, dispatch: any): Promise<any> => {
   axios.defaults.headers.common["Authorization"] = token ? token : "";
 
   await axios
-    .get("http://localhost:5000/articles", {
+    .get("/articles", {
       params: {
         limit: data.rowsPerPage,
         page: data.pageNumber,

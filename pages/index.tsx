@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import axios from "axios";
+import axios from "./../configs/axios";
 import { useEffect, useState } from "react";
 import Modal from "./../components/AddArticle";
 import Table from "./../components/Table";
@@ -18,7 +18,7 @@ const Home: NextPage = () => {
 
   const getLoggedInUser = async (props: any): Promise<any> => {
     axios.defaults.headers.common["Authorization"] = props;
-    await axios.get("http://localhost:5000/users/getUser").then((res) => {
+    await axios.get("/users/getUser").then((res) => {
       dispatch({
         type: "SET_USER",
         user: res.data.data,

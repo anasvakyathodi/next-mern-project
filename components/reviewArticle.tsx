@@ -8,7 +8,7 @@ import {
   Paper,
   ButtonGroup,
 } from "@mui/material";
-import axios from "axios";
+import axios from "./../configs/axios";
 import { getTableData } from "../actions/users";
 import { useDataLayerValue } from "./../context/DataLayer";
 import { useState } from "react";
@@ -45,7 +45,7 @@ export default function ReviewArticle({ open, handleClose, data }: Props) {
     const token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = token ? token : "";
     await axios
-      .post("http://localhost:5000/articles/review", {
+      .post("/articles/review", {
         id,
         remarks: remarks,
         action: "accepted",
@@ -64,7 +64,7 @@ export default function ReviewArticle({ open, handleClose, data }: Props) {
     const token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = token ? token : "";
     await axios
-      .post("http://localhost:5000/articles/review", {
+      .post("/articles/review", {
         id,
         remarks: remarks,
         action: "rejected",

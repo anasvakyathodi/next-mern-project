@@ -7,7 +7,7 @@ import {
   TextField,
   Paper,
 } from "@mui/material";
-import axios from "axios";
+import axios from "./../configs/axios";
 import { getTableData } from "../actions/users";
 import { useDataLayerValue } from "./../context/DataLayer";
 const style = {
@@ -39,7 +39,7 @@ export default function AddArticle({ open, handleClose }: Props) {
     axios.defaults.headers.common["Authorization"] = token ? token : "";
     console.log(data.get("title"), data.get("content"));
     await axios
-      .post("http://localhost:5000/articles/create", {
+      .post("/articles/create", {
         title: data.get("title"),
         content: data.get("content"),
       })
