@@ -13,7 +13,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "./../configs/axios";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
 import Image from "next/image";
