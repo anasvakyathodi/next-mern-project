@@ -16,19 +16,24 @@ import { useRouter } from "next/router";
 import { useDataLayerValue } from "../context/DataLayer";
 import { handleLogout } from "../actions/users";
 
+// header component
 const Header = () => {
+  // router object
   const router = useRouter();
+  // state for controlling profile dropdown
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
+  // user data from context api
   const [{ user }] = useDataLayerValue();
-
+  // open user menu
   const handleOpenUserMenu = (event: any) => {
     setAnchorElUser(event.currentTarget);
   };
-
+  // close user menu
   const handleCloseUserMenu = (): any => {
     setAnchorElUser(null);
   };
 
+  // logout button click handling function
   const handleClick = async (): Promise<any> => {
     try {
       await handleLogout(router);
@@ -39,6 +44,7 @@ const Header = () => {
     }
   };
 
+  // logo container style
   const logoStyle = {
     backgroundColor: "#fff",
     padding: "1rem",

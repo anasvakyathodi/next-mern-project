@@ -14,6 +14,8 @@ import { useRouter } from "next/router";
 import { useDataLayerValue } from "../context/DataLayer";
 import Head from "next/head";
 import { login } from "../actions/users";
+
+// copy right component
 const Copyright = (props: any) => {
   return (
     <Typography
@@ -35,6 +37,7 @@ const Login: NextPage<AppProps> = (props: AppProps) => {
   const router = useRouter();
   const [{}, dispatch] = useDataLayerValue();
 
+  // handle login button event
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

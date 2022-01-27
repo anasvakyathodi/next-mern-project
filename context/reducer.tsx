@@ -1,9 +1,11 @@
+// initial state
 const initialState = {
-  user: {},
-  tableData: [],
-  count: 0,
+  user: {}, // user data
+  tableData: [], // table data
+  count: 0, // articles count
 };
 
+// reducer function
 const reducer = (state: any, action: any) => {
   switch (action.type) {
     case "SET_USER":

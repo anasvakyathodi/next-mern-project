@@ -31,8 +31,12 @@ interface Props {
   handleClose: () => void;
 }
 
+// add article component
 export default function AddArticle({ open, handleClose }: Props) {
+  // context api dispatch
   const [{}, dispatch] = useDataLayerValue();
+
+  //submission handling function
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       await handleArticleCreate(event, dispatch);

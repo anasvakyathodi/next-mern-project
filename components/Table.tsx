@@ -15,6 +15,7 @@ import { useState } from "react";
 import { getTableData } from "../actions/users";
 import ReviewArticle from "./ReviewArticle";
 
+// custom table component
 const CustomTable = () => {
   const [{ user, tableData, count }, dispatch] = useDataLayerValue();
   const [page, setPage] = useState<number>(0);
@@ -22,6 +23,7 @@ const CustomTable = () => {
   const [open, setOpen] = useState(false);
   const [reviewData, setReviewData] = useState(null);
 
+  // handle page number change
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -30,6 +32,7 @@ const CustomTable = () => {
     getTableData({ pageNumber: newPage, rowsPerPage: rowsPerPage }, dispatch);
   };
 
+  // handle rows per page change
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -41,10 +44,12 @@ const CustomTable = () => {
     );
   };
 
+  // handle modal close
   const handleClose = () => {
     setOpen(false);
   };
 
+  // handle review button click
   const handleReview = (data: any) => {
     if (user.userType !== "admin") {
       return;
@@ -53,6 +58,7 @@ const CustomTable = () => {
     setOpen(true);
   };
 
+  // status icon style
   const statusStyle = {
     borderRadius: "50%",
     width: "14px",

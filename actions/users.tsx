@@ -1,5 +1,6 @@
 import axios from "./../configs/axios";
 
+// login function
 export const login = async (
   props: any,
   dispatch: any,
@@ -32,6 +33,7 @@ interface Data {
   rowsPerPage: number | null;
 }
 
+// get table function
 export const getTableData = async (data: Data, dispatch: any): Promise<any> => {
   try {
     const token = localStorage.getItem("token");
@@ -50,6 +52,7 @@ export const getTableData = async (data: Data, dispatch: any): Promise<any> => {
   }
 };
 
+// article creation Function
 export const handleArticleCreate = async (
   event: React.FormEvent<HTMLFormElement>,
   dispatch: any
@@ -81,6 +84,7 @@ export const handleLogout = async (router: any): Promise<any> => {
   }
 };
 
+// review handling function
 export const handleReview = async (
   id: any,
   remarks: any,
@@ -102,6 +106,7 @@ export const handleReview = async (
   }
 };
 
+// user data fetching function (data passed: token)
 export const getLoggedInUserData = async (
   dispatch: any,
   router: any

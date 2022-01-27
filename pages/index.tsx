@@ -9,6 +9,7 @@ import { useDataLayerValue } from "../context/DataLayer";
 import { getLoggedInUserData } from "../actions/users";
 import Head from "next/head";
 
+// home page
 const Home: NextPage = () => {
   const [{ user }, dispatch] = useDataLayerValue();
   const router = useRouter();
@@ -16,6 +17,7 @@ const Home: NextPage = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // fetch user data while loading
   useEffect(() => {
     getLoggedInUserData(dispatch, router);
   }, []);

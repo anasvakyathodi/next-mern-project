@@ -12,6 +12,7 @@ import { handleReview } from "../actions/users";
 import { useDataLayerValue } from "../context/DataLayer";
 import { useState } from "react";
 
+// modal style
 const modalStyle = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -33,15 +34,18 @@ interface Props {
   handleClose: () => void;
   data: any;
 }
+// review article component
 export default function ReviewArticle({ open, handleClose, data }: Props) {
   let id = data?._id;
   const [{}, dispatch] = useDataLayerValue();
+  // remark state hook
   const [remarks, setRemarks] = useState<string>("");
-
+  // input text change event handler
   const handleChange = (event: any) => {
     setRemarks(event.target.value);
   };
 
+  // handling accept button click
   const handleAcceptClick = async () => {
     try {
       await handleReview(id, remarks, dispatch, "accepted");
@@ -53,6 +57,7 @@ export default function ReviewArticle({ open, handleClose, data }: Props) {
     }
   };
 
+  // handling rejection button click
   const handleRejectClick = async () => {
     try {
       await handleReview(id, remarks, dispatch, "rejected");
