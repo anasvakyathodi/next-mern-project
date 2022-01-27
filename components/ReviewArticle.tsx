@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Modal,
   Typography,
@@ -7,12 +6,13 @@ import {
   TextField,
   Paper,
   ButtonGroup,
+  Grid,
 } from "@mui/material";
-import axios from "./../configs/axios";
-import { getTableData } from "../actions/users";
-import { useDataLayerValue } from "./../context/DataLayer";
+import { handleReview } from "../actions/users";
+import { useDataLayerValue } from "../context/DataLayer";
 import { useState } from "react";
-const style = {
+
+const modalStyle = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
@@ -37,61 +37,44 @@ export default function ReviewArticle({ open, handleClose, data }: Props) {
   let id = data?._id;
   const [{}, dispatch] = useDataLayerValue();
   const [remarks, setRemarks] = useState<string>("");
+
   const handleChange = (event: any) => {
     setRemarks(event.target.value);
   };
 
-  const handleSuccess = async () => {
-    const token = localStorage.getItem("token");
-    axios.defaults.headers.common["Authorization"] = token ? token : "";
-    await axios
-      .post("/articles/review", {
-        id,
-        remarks: remarks,
-        action: "accepted",
-      })
-      .then((res) => {
-        getTableData({ pageNumber: null, rowsPerPage: null }, dispatch);
-        setRemarks("");
-        handleClose();
-      })
-      .catch(() => {
-        alert("Something went wrong!");
-      });
+  const handleAcceptClick = async () => {
+    try {
+      await handleReview(id, remarks, dispatch, "accepted");
+      setRemarks("");
+      handleClose();
+    } catch (error) {
+      alert("Something went wrong");
+      console.log(error);
+    }
   };
 
-  const handleReject = async () => {
-    const token = localStorage.getItem("token");
-    axios.defaults.headers.common["Authorization"] = token ? token : "";
-    await axios
-      .post("/articles/review", {
-        id,
-        remarks: remarks,
-        action: "rejected",
-      })
-      .then((res) => {
-        getTableData({ pageNumber: null, rowsPerPage: null }, dispatch);
-        setRemarks("");
-
-        handleClose();
-      })
-      .catch(() => {
-        alert("Something went wrong!");
-      });
+  const handleRejectClick = async () => {
+    try {
+      await handleReview(id, remarks, dispatch, "rejected");
+      setRemarks("");
+      handleClose();
+    } catch (error) {
+      alert("Something went wrong");
+      console.log(error);
+    }
   };
 
   return (
     <div>
       <Modal
         open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="review-article-modal"
+        aria-describedby="review-article-modal-form"
       >
-        <Paper sx={style}>
+        <Paper sx={modalStyle}>
           <Box component="form" noValidate>
             <Typography
-              id="modal-modal-title"
+              id="review-article-modal-title"
               variant="h6"
               component="h2"
               gutterBottom
@@ -131,14 +114,23 @@ export default function ReviewArticle({ open, handleClose, data }: Props) {
               placeholder="Enter Remarks Here"
               sx={textFieldStyle}
             />
-            <ButtonGroup disableElevation variant="contained">
-              <Button color="success" onClick={handleSuccess}>
-                Accept
-              </Button>
-              <Button color="error" onClick={handleReject}>
-                Reject
-              </Button>
-            </ButtonGroup>
+            <Grid container justifyContent="space-between">
+              <Grid item>
+                <ButtonGroup disableElevation variant="contained">
+                  <Button color="success" onClick={handleAcceptClick}>
+                    Accept
+                  </Button>
+                  <Button color="error" onClick={handleRejectClick}>
+                    Reject
+                  </Button>
+                </ButtonGroup>
+              </Grid>
+              <Grid item>
+                <Button color="inherit" onClick={handleClose}>
+                  Close
+                </Button>
+              </Grid>
+            </Grid>
           </Box>
         </Paper>
       </Modal>

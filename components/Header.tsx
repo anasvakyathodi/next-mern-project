@@ -1,10 +1,7 @@
-import { NextComponentType } from "next";
-
 import {
   Container,
   AppBar,
   Toolbar,
-  Button,
   Tooltip,
   Avatar,
   Typography,
@@ -13,72 +10,60 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import axios from "./../configs/axios";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useDataLayerValue } from "../context/DataLayer";
+import { handleLogout } from "../actions/users";
 
 const Header = () => {
   const router = useRouter();
-  const [anchorElNav, setAnchorElNav] = useState<HTMLElement | null>(null);
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
   const [{ user }] = useDataLayerValue();
 
-  const handleOpenNavMenu = (event: any) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: any) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = (): any => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = (): any => {
     setAnchorElUser(null);
   };
 
-  const handleLogout = async (): Promise<any> => {
+  const handleClick = async (): Promise<any> => {
     try {
+      await handleLogout(router);
       handleCloseUserMenu();
-      await axios.post("/users/logout");
-      localStorage.removeItem("token");
-      router.replace("/login");
     } catch (error) {
+      alert("Something went wrong!");
       console.log(error);
     }
   };
 
+  const logoStyle = {
+    backgroundColor: "#fff",
+    padding: "1rem",
+    borderRadius: "50%",
+    border: "4px solid #73BBBF",
+    position: "absolute",
+    top: "-38%",
+    left: "2%",
+  };
+
+  const appBarStyle = {
+    color: "#73BBBF",
+    mt: "2rem",
+    backgroundColor: "#fff",
+    boxShadow: "none",
+  };
+
   return (
-    <AppBar
-      position="static"
-      sx={{
-        color: "#73BBBF",
-        mt: "2rem",
-        backgroundColor: "#fff",
-        boxShadow: "none",
-      }}
-    >
+    <AppBar position="static" sx={appBarStyle}>
       <Container maxWidth="xl">
         <Toolbar
           disableGutters
           sx={{ backgroundColor: "#CCF2F4", borderRadius: "20px" }}
         >
-          <Box
-            component="div"
-            sx={{
-              backgroundColor: "#fff",
-              padding: "1rem",
-              borderRadius: "50%",
-              border: "4px solid #73BBBF",
-              position: "absolute",
-              top: "-38%",
-              left: "2%",
-            }}
-          >
+          <Box component="div" sx={logoStyle}>
             <Image src="/logo2.png" height="75" width="73" />
           </Box>
           <Box sx={{ flex: 1 }}></Box>
@@ -112,7 +97,7 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem key={"logout"} onClick={handleLogout}>
+              <MenuItem key={"logout"} onClick={handleClick}>
                 <Typography textAlign="center">Log out</Typography>
               </MenuItem>
             </Menu>

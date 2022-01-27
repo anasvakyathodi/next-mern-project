@@ -10,7 +10,6 @@ import {
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Image from "next/image";
-import axios from "./../configs/axios";
 import { useRouter } from "next/router";
 import { useDataLayerValue } from "../context/DataLayer";
 import Head from "next/head";
@@ -32,11 +31,10 @@ const Copyright = (props: any) => {
   );
 };
 
-type Props = {};
-
 const Login: NextPage<AppProps> = (props: AppProps) => {
   const router = useRouter();
   const [{}, dispatch] = useDataLayerValue();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

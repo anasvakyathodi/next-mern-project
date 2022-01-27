@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Modal,
   Typography,
@@ -6,12 +5,13 @@ import {
   Box,
   TextField,
   Paper,
+  Grid,
 } from "@mui/material";
-import axios from "./../configs/axios";
-import { getTableData } from "../actions/users";
+import { handleArticleCreate } from "../actions/users";
 import { useDataLayerValue } from "./../context/DataLayer";
-const style = {
-  position: "absolute" as "absolute",
+
+const modalStyle = {
+  position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -30,40 +30,30 @@ interface Props {
   open: boolean;
   handleClose: () => void;
 }
+
 export default function AddArticle({ open, handleClose }: Props) {
   const [{}, dispatch] = useDataLayerValue();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const token = localStorage.getItem("token");
-    axios.defaults.headers.common["Authorization"] = token ? token : "";
-    console.log(data.get("title"), data.get("content"));
-    await axios
-      .post("/articles/create", {
-        title: data.get("title"),
-        content: data.get("content"),
-      })
-      .then((res) => {
-        handleClose();
-        getTableData({ pageNumber: null, rowsPerPage: null }, dispatch);
-      })
-      .catch(() => {
-        alert("Something went wrong!");
-      });
+    try {
+      await handleArticleCreate(event, dispatch);
+      handleClose();
+    } catch (error) {
+      alert("Something went wrong!");
+      console.log(error);
+    }
   };
 
   return (
     <div>
       <Modal
         open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="article-add-modal"
+        aria-describedby="article-add-modal-form"
       >
-        <Paper sx={style}>
+        <Paper sx={modalStyle}>
           <Box component="form" onSubmit={handleSubmit} noValidate>
             <Typography
-              id="modal-modal-title"
+              id="form-title"
               variant="h6"
               component="h2"
               gutterBottom
@@ -87,14 +77,30 @@ export default function AddArticle({ open, handleClose }: Props) {
               placeholder="Enter Content Here"
               sx={textFieldStyle}
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Submit
-            </Button>
+            <Grid container justifyContent="space-between">
+              <Grid item>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Submit
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  type="button"
+                  onClick={handleClose}
+                  fullWidth
+                  color="inherit"
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Close
+                </Button>
+              </Grid>
+            </Grid>
           </Box>
         </Paper>
       </Modal>

@@ -13,13 +13,15 @@ import { useDataLayerValue } from "./../context/DataLayer";
 import moment from "moment";
 import { useState } from "react";
 import { getTableData } from "../actions/users";
-import ReviewArticle from "./reviewArticle";
+import ReviewArticle from "./ReviewArticle";
+
 const CustomTable = () => {
   const [{ user, tableData, count }, dispatch] = useDataLayerValue();
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [open, setOpen] = useState(false);
   const [reviewData, setReviewData] = useState(null);
+
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -51,9 +53,16 @@ const CustomTable = () => {
     setOpen(true);
   };
 
+  const statusStyle = {
+    borderRadius: "50%",
+    width: "14px",
+    height: "14px",
+    margin: "auto",
+  };
+
   return (
     <>
-      <ReviewArticle open={open} handleClose={handleClose} data={reviewData} />
+      <ReviewArticle open={open} data={reviewData} handleClose={handleClose} />
       <TableContainer
         component={Paper}
         sx={{ maxHeight: "485px", overflowY: "auto" }}
@@ -85,35 +94,16 @@ const CustomTable = () => {
               >
                 <TableCell component="th" scope="row" align="center">
                   {row.status === "no action" && (
-                    <Box
-                      sx={{
-                        borderRadius: "50%",
-                        backgroundColor: "red",
-                        width: "14px",
-                        height: "14px",
-                        margin: "auto",
-                      }}
-                    />
+                    <Box sx={{ ...statusStyle, backgroundColor: "red" }} />
                   )}
                   {row.status === "accepted" && (
-                    <Box
-                      sx={{
-                        borderRadius: "50%",
-                        backgroundColor: "green",
-                        width: "14px",
-                        height: "14px",
-                        margin: "auto",
-                      }}
-                    />
+                    <Box sx={{ ...statusStyle, backgroundColor: "green" }} />
                   )}
                   {row.status === "rejected" && (
                     <Box
                       sx={{
-                        borderRadius: "50%",
+                        ...statusStyle,
                         backgroundColor: "brown",
-                        width: "14px",
-                        height: "14px",
-                        margin: "auto",
                       }}
                     />
                   )}
